@@ -1,4 +1,4 @@
-/* Tribal Wars 2 Farmbot v2018-12-15
+/* Tribal Wars 2 Farmbot v2019-01-04
 This bot farms barbarian villages in Tribal Wars 2. It reads your battle reports and sends troops to your farms again.
 
 ## Features Of This Bot
@@ -42,7 +42,7 @@ const int numberOfFarmCyclesToRepeatRandomAdditionMax = 0;
 //	The bot ends a farming cycle when it has seen this many reports in a row with already covered coordinates of attacking and defending villages.
 const int numberOfConsecutiveReportsWithAlreadyCoveredCoordinatesToEndCycle = 30;
 
-const int waitForReportListButtonTimespanMaxSeconds = 120;
+const int waitForReportListButtonTimespanMaxSeconds = 300;
 const int inGameDelaySeconds = 10;
 const int cycleDurationMaxSeconds = 60 * 40;
 
@@ -111,7 +111,13 @@ browserPage.Browser.PagesAsync().Result.Except(new []{browserPage}).Select(page 
 
 Host.Log("Looks like opening the web browser was successful.");
 
+Host.Log("Attempt to navigate....");
 Host.Delay(1);
+browserPage.GoToAsync("https://en.tribalwars2.com/game.php?world=en41&character_id=1109197").Wait();
+Host.Delay(1);
+Host.Log("Navigate complete");
+
+Host.Delay(1111);
 
 var sessionReport = new CycleReport{ BeginTime = Host.GetTimeContinuousMilli() / 1000 };
 
