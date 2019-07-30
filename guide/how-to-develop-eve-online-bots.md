@@ -9,7 +9,7 @@ This guide goes beyond just running and configuring bots. The tools I show here 
 
 ### Entry Point - `processEvent`
 
-Each time an event happens, the framework calls the function called `interfaceToHost_processEvent`. Because of this unique role, this function is sometimes also referred to as 'entry point'.
+Each time an event happens, the framework calls the function `interfaceToHost_processEvent` from the `Main.elm` file. Because of this unique role, this function is sometimes also referred to as 'entry point'.
 
 Let's look at how this function is implemented. Usually it will look like this:
 ```Elm
