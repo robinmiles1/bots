@@ -20,7 +20,7 @@ This event/response cycle repeats for every event happening during the operation
 
 Some examples of events:
 
-+ The user sets the bot configuration (as explained in the guide on how to use bots).
++ The user sets the bot configuration (as explained in the [guide on how to use bots](./how-to-use-eve-online-bots.md)).
 + The engine completes executing one of the tasks it received from the bot in an earlier cycle. The event contains the result of the execution of this task.
 
 Examples of tasks the bot can give to the engine:
