@@ -19,6 +19,20 @@ interfaceToHost_processEvent =
 ```
 This function is just taking care of serializing and deserializing on the interface to the engine, and delegates everything else to the `processEvent` function in the same file. It translates between the serial representations used on the interface and typed values, so that you can enjoy the benefits of the type system when working on the bot code. In theory, this function could look different, at least because you cold rename the function `processEvent` to something else. But we will leave this function alone and forget about it, and turn to the `processEvent` function.
 
+Let's look at the type signature of `processEvent`, the first line of the functions source code:
+```Elm
+processEvent : BotEventAtTime -> State -> ( State, ProcessEventResponse )
+```
+Thanks to the translation in the wrapping function discussed above, the types here are already more specific. So this type signature better tells what kinds of values this function takes and returns.
+
+I will quickly break down the Elm syntax here: The part after the last arrow (`->`) is the return type. It is a tuple with two components. The part between the colon (`:`) and the return type is the list of parameters. So we have two parameters, one of type `BotEventAtTime` and one of type `State`.
+
+Let's have a closer look at the three different types here:
+
++ `BotEventAtTime`: this describes an event that happens during the operation of the bot. All information the bot ever receives is coming through the values given with this first parameter.
++ `ProcessEventResponse`: This type describes what the engine should do.
++ `State`: This is specific to the bot. This type describes what the bot remember from one step to the next.
+
 ## Setting up the Programming Tools
 
 The goal of this section is to enable you to edit a bot and quickly find possible problems in the code.
