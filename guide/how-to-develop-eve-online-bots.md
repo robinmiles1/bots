@@ -5,6 +5,35 @@ There is a separate guide on how to run EVE Online bots, read that first, as thi
 
 This guide goes beyond just running and configuring bots. The tools I show here give you the power to automate anything in EVE Online. I will also summarize what I learned during bot development projects like the EVE Online mission running and anomaly ratting bots, or the Tribal Wars 2 farmbot. The goal is to present the methods and approaches which make the development process efficient and a pleasant experience.
 
+## Bot Architecture
+
+Before we look at any code, let me give you a high-level overview of how a bot works and how it is structured.
+
+A bot is a program which reacts to events. Every time an event happens, the engine tells the bot. Given this information, the bot then computes its new state and a response to this event.
+
+This event response is given to the engine and contains the following two components:
+
++ A status message to inform about the current state in a human-readable form. When you run a bot, you can see the engine displaying this message.
++ A list of tasks for the engine to execute.
+
+This event/response cycle repeats for every event happening during the operation of the bot.
+
+Some examples of events:
+
++ The user sets the bot configuration (as explained in the guide on how to use bots).
++ The engine completes executing one of the tasks it received from the bot in an earlier cycle. The event contains the result of the execution of this task.
+
+Examples of tasks the bot can give to the engine:
+
++ Take a screenshot of a window of another app on the system.
++ Read the contents of another process' memory.
++ Send a mouse click to a specific position in a window in another process.
++ Simulate pressing a keyboard key.
++ Start a new Windows process, specifying the path to an executable file.
++ Stop another process on the system.
+
+As we can see from the examples above, these events and tasks can be quite fine-grained, so you might see the event/response cycle happen several times per second.
+
 ## Bot Code Architecture
 
 ### Entry Point - `processEvent`
