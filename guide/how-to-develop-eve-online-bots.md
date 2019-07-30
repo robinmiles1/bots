@@ -54,7 +54,7 @@ processEvent : InterfaceToHost.BotEventAtTime -> State -> ( State, InterfaceToHo
 ```
 Thanks to the translation in the wrapping function discussed above, the types here are already more specific. So this type signature better tells what kinds of values this function takes and returns.
 
-> The acual names for the types used here are only conventions. You might find a bot code which uses different names. For example, the bot author might choose to abbreviate `InterfaceToHost.BotEventAtTime` to `BotEventAtTime`, by using a type alias.
+> The actual names for the types used here are only conventions. You might find a bot code which uses different names. For example, the bot author might choose to abbreviate `InterfaceToHost.BotEventAtTime` to `BotEventAtTime`, by using a type alias.
 
 ```todo
 -> TODO:  
