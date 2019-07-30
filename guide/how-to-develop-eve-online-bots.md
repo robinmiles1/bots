@@ -5,6 +5,20 @@ There is a separate guide on how to run EVE Online bots, read that first, as thi
 
 This guide goes beyond just running and configuring bots. The tools I show here give you the power to automate anything in EVE Online. I will also summarize what I learned during bot development projects like the EVE Online mission running and anomaly ratting bots, or the Tribal Wars 2 farmbot. The goal is to present the methods and approaches which make the development process efficient and a pleasant experience.
 
+## Architecture
+
+### Entry Point - `processEvent`
+
+Each time an event happens, the framework calls the function called `interfaceToHost_processEvent`. Because of this unique role, this function as sometimes also referred to as 'entry point'.
+
+Let's look at how this function is implemented. Usually it will look like this:
+```Elm
+interfaceToHost_processEvent : String -> InterfaceBotState -> ( InterfaceBotState, String )
+interfaceToHost_processEvent =
+    InterfaceToHost.wrapForSerialInterface_processEvent processEvent
+```
+This function is just taking care of serializing and deserializing on the interface to the engine, and delegates everything else to the `processEvent` function in the same file. It translates between the serial representations used on the interface and typed values, so that you can enjoy the benefits of the type system when working on the bot code. In theory, this function could look different, at least because you cold rename the function `processEvent` to something else. But we will leave this function alone and forget about it, and turn to the `processEvent` function.
+
 ## Setting up the Programming Tools
 
 The goal of this section is to enable you to edit a bot and quickly find possible problems in the code.
