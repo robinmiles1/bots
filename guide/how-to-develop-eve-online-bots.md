@@ -80,7 +80,7 @@ Let's have a closer look at the three different types here:
 
 + `InterfaceToHost.BotEventAtTime`: This describes an event that happens during the operation of the bot. All information the bot ever receives is coming through the values given with this first parameter.
 + `InterfaceToHost.ProcessEventResponse`: This type describes what the engine should do.
-+ `State`: This is specific to the bot. This type describes what the bot remember from one step to the next.
++ `State`: The `State` type is specific to the bot. With this type, we describe what the bot remembers between events. When the engine informs the bot about a new event, it also passes the `State` value which the bot returned after processing the previous event (The first component of the tuple in the return type). But what if this is the first event? Then there is no previous event? In this case, the engine takes the value from the function `interfaceToHost_initState` to give to the bot.
 
 ## Setting up the Programming Tools
 
