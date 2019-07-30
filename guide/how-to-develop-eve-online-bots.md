@@ -34,7 +34,19 @@ Examples of tasks the bot can give to the engine:
 
 As we can see from the examples above, these events and tasks can be quite fine-grained, so you might see the event/response cycle happen several times per second.
 
-## Bot Code Architecture
+## Bot Code
+
+### File Structure
+
+The bot code is a set of files. Some of these files are located in subdirectories. The bot code always contains the following three files:
+
++ `src/Main.elm`: When you code a bot from scratch, this file is where you start to edit.
++ `src/Bot_Interface_To_Host_20190720.elm`: You don't need to edit anything in here.
++ `elm.json`. This file is only edited to include Elm packages (That is a way to include functionality from external sources).
+
+You can distribute code into more `.elm` files. But this is not required, you can add everything to the `src/Main.elm` file.
+
+Each file with a name ending in `.elm` contains one [Elm module](https://guide.elm-lang.org/webapps/modules.html). Each module contains [functions](https://guide.elm-lang.org/core_language.html), which are composed to describe the behavior of the bot.
 
 ### Entry Point - `processEvent`
 
