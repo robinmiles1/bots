@@ -1,7 +1,7 @@
 # How to Develop EVE Online Bots
 
 This is a guide for beginners on how to develop EVE Online bots. You don't need prior experience in programming or software development, as I explain the process and tools from the ground up.
-There is a separate guide on how to run EVE Online bots, read that first, as this guide assumes you already know how to load, start, and operate a bot. You can find that guide at [./how-to-use-eve-online-bots.md](./how-to-use-eve-online-bots.md).
+There is a separate guide on how to run EVE Online bots, read that first, as this guide assumes you already know how to load, start, configure, and operate a bot. You can find that guide at [./how-to-use-eve-online-bots.md](./how-to-use-eve-online-bots.md).
 
 This guide goes beyond just running and configuring bots. The tools I show here give you the power to automate anything in EVE Online. I will also summarize what I learned during bot development projects like the EVE Online mission running and anomaly ratting bots, or the Tribal Wars 2 farmbot. The goal is to present the methods and approaches which make the development process efficient and a pleasant experience.
 
