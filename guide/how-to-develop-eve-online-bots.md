@@ -5,7 +5,7 @@ There is a separate guide on how to run EVE Online bots, read that first, as thi
 
 This guide goes beyond just running and configuring bots. The tools I show here give you the power to automate anything in EVE Online. I will also summarize what I learned during bot development projects like the EVE Online mission running and anomaly ratting bots, or the Tribal Wars 2 farmbot. The goal is to present the methods and approaches which make the development process efficient and a pleasant experience.
 
-## Architecture
+## Bot Code Architecture
 
 ### Entry Point - `processEvent`
 
