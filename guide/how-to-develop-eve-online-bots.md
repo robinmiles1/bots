@@ -21,16 +21,24 @@ This function takes care of serializing and deserializing on the interface to th
 
 Let's look at the type signature of `processEvent`, the first line of the functions source code:
 ```Elm
-processEvent : BotEventAtTime -> State -> ( State, ProcessEventResponse )
+processEvent : InterfaceToHost.BotEventAtTime -> State -> ( State, InterfaceToHost.ProcessEventResponse )
 ```
 Thanks to the translation in the wrapping function discussed above, the types here are already more specific. So this type signature better tells what kinds of values this function takes and returns.
 
-I will quickly break down the Elm syntax here: The part after the last arrow (`->`) is the return type. It is a tuple with two components. The part between the colon (`:`) and the return type is the list of parameters. So we have two parameters, one of type `BotEventAtTime` and one of type `State`.
+> The acual names for the types used here are only conventions. You might find a bot code which uses different names. For example, the bot author might choose to abbreviate `InterfaceToHost.BotEventAtTime` to `BotEventAtTime`, by using a type alias.
+
+```todo
+-> TODO:  
+  + Update the example bots and devtools for consistent names.  
+  + Look into improving type names for more consistency (`BotEventResponse`?)
+```
+
+I will quickly break down the Elm syntax here: The part after the last arrow (`->`) is the return type. It is a tuple with two components. The part between the colon (`:`) and the return type is the list of parameters. So we have two parameters, one of type `InterfaceToHost.BotEventAtTime` and one of type `State`.
 
 Let's have a closer look at the three different types here:
 
-+ `BotEventAtTime`: this describes an event that happens during the operation of the bot. All information the bot ever receives is coming through the values given with this first parameter.
-+ `ProcessEventResponse`: This type describes what the engine should do.
++ `InterfaceToHost.BotEventAtTime`: This describes an event that happens during the operation of the bot. All information the bot ever receives is coming through the values given with this first parameter.
++ `InterfaceToHost.ProcessEventResponse`: This type describes what the engine should do.
 + `State`: This is specific to the bot. This type describes what the bot remember from one step to the next.
 
 ## Setting up the Programming Tools
