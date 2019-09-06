@@ -1,4 +1,4 @@
-/* Tribal Wars 2 Farmbot v2019-01-18
+/* Tribal Wars 2 Farmbot v2019-09-06 (Set farm cycles to 99 for Mike Azzara (https://forum.botengine.org/t/farm-manager-tribal-wars-2-farmbot/1406/202?u=viir))
 This bot farms barbarian villages in Tribal Wars 2. It reads your battle reports and sends troops to your farms again.
 
 ## Features of This Bot
@@ -35,7 +35,7 @@ const int breakBetweenCycleDurationMinSeconds = 60 * 60;
 //	Upper limit of a random additional time for breaking between farming cycles.
 const int breakBetweenCycleDurationRandomAdditionMaxSeconds = 60 * 20;
 
-const int numberOfFarmCyclesToRepeatMin = 1;
+const int numberOfFarmCyclesToRepeatMin = 99;
 
 const int numberOfFarmCyclesToRepeatRandomAdditionMax = 0;
 
