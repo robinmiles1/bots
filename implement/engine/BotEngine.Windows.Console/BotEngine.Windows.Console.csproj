@@ -24,4 +24,8 @@
     </Reference>
   </ItemGroup>
 
+  <PropertyGroup>
+    <IncludeSymbolsInSingleFile>true</IncludeSymbolsInSingleFile>
+  </PropertyGroup>
+
 </Project>
