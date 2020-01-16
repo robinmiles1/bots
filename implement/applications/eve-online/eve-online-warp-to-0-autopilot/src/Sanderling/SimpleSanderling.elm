@@ -586,7 +586,7 @@ statusReportFromState state =
     [ fromBot
     , "----"
     , "EVE Online framework status:"
-    -- , runtimeExpensesReport
+    , runtimeExpensesReport
     , lastScriptRunResult
     ]
         ++ botRequestQueueLengthWarning
