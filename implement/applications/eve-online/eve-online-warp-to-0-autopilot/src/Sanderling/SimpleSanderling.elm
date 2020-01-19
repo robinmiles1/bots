@@ -558,7 +558,7 @@ statusReportFromState state =
 
         lastScriptRunResult =
             "Last script run result is: "
-                ++ (state.setup.lastRunScriptResult |> Maybe.map (runScriptResultDisplayString >> stringEllipsis 140 "....") |> Maybe.withDefault "Nothing")
+                ++ (state.setup.lastRunScriptResult |> Maybe.map (runScriptResultDisplayString >> stringEllipsis 640 "....") |> Maybe.withDefault "Nothing")
 
         botRequestQueueLength =
             state.botState.requestQueue |> List.length
