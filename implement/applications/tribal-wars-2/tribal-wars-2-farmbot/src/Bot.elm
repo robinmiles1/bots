@@ -1,4 +1,4 @@
-{- Tribal Wars 2 farmbot version 2020-03-12
+{- Tribal Wars 2 farmbot version 2020-03-12 with larger radius
    I search for barbarian villages around your villages and then attack them.
 
    When starting, I first open a new web browser window. This might take more on the first run because I need to download the web browser software.
@@ -907,7 +907,7 @@ computeVillageNextAction botState farmCycleState ( villageId, villageDetails ) p
                     let
                         coordinatesAroundVillage =
                             [ villageDetails.coordinates ]
-                                |> coordinatesToSearchFromOwnVillagesCoordinates 20
+                                |> coordinatesToSearchFromOwnVillagesCoordinates 50
 
                         sentAttackToCoordinates coordinates =
                             (farmCycleState.sentAttackByCoordinates
