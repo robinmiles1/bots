@@ -1,4 +1,4 @@
-{- Tribal Wars 2 farmbot version 2020-03-24
+{- Tribal Wars 2 farmbot version 2020-03-24 - radius increased to 80
    I search for barbarian villages around your villages and then attack them.
 
    When starting, I first open a new web browser window. This might take more on the first run because I need to download the web browser software.
@@ -106,7 +106,7 @@ selectedVillageInfoMaxAge =
 
 searchFarmsRadiusAroundOwnVillage : Int
 searchFarmsRadiusAroundOwnVillage =
-    50
+    80
 
 
 readFromGameTimeoutCountThresholdToRestart : Int
