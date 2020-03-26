@@ -1,8 +1,5 @@
-{- EVE Online mining bot version 2020-03-23
-
-   The bot warps to an asteroid belt, mines there until the ore hold is full, and then docks at a station to unload the ore. It then repeats this cycle until you stop it.
-   It remembers the station in which it was last docked, and docks again at the same station.
-
+{- EVE Online mining bot version 2020-03-23 - ragnaroks Jetcan Mining
+   The bot warps to an asteroid belt, mines there until the ore hold is full, and then jettisons the ore so you can scoop it with a Mobile Tractor Unit. It then repeats this cycle until you stop it.
    Setup instructions for the EVE Online client:
    + Set the UI language to English.
    + In Overview window, make asteroids visible.
@@ -43,15 +40,13 @@ import Result.Extra
 
 
 {-| Sources for the defaults:
-
   - <https://forum.botengine.org/t/mining-bot-wont-approach/3162>
-
 -}
 defaultBotSettings : BotSettings
 defaultBotSettings =
     { runAwayShieldHitpointsThresholdPercent = 50
     , targetingRange = 8000
-    , miningModuleRange = 5000
+    , miningModuleRange = 18000
     , botStepDelayMilliseconds = 2000
     , lastDockedStationNameFromInfoPanel = Nothing
     }
@@ -140,7 +135,7 @@ type alias State =
 decideNextAction : BotDecisionContext -> DecisionPathNode
 decideNextAction context =
     branchDependingOnDockedOrInSpace
-        (DescribeBranch "I see no ship UI, assume we are docked." (decideNextActionWhenDocked context.parsedUserInterface))
+        (DescribeBranch "I see no ship UI, assume we are docked." (EndDecisionPath Wait))
         (\shipUI ->
             if shipUI.hitpointsPercent.shield < context.settings.runAwayShieldHitpointsThresholdPercent then
                 Just
@@ -156,52 +151,35 @@ decideNextAction context =
         context.parsedUserInterface
 
 
-decideNextActionWhenDocked : ParsedUserInterface -> DecisionPathNode
-decideNextActionWhenDocked parsedUserInterface =
-    case parsedUserInterface |> inventoryWindowItemHangar of
+inventorySelectAllAndJettison : ParsedUserInterface -> DecisionPathNode
+inventorySelectAllAndJettison parsedUserInterface =
+    case parsedUserInterface |> inventoryWindowSelectedContainerFirstItem of
         Nothing ->
-            DescribeBranch "I do not see the item hangar in the inventory." (EndDecisionPath Wait)
+            DescribeBranch "I see no item in the ore hold." (EndDecisionPath Wait)
 
-        Just itemHangar ->
-            case parsedUserInterface |> inventoryWindowSelectedContainerFirstItem of
-                Nothing ->
-                    DescribeBranch "I see no item in the ore hold. Time to undock."
-                        (case parsedUserInterface |> activeShipUiElementFromInventoryWindow of
-                            Nothing ->
-                                EndDecisionPath Wait
-
-                            Just activeShipEntry ->
-                                EndDecisionPath
-                                    (Act
-                                        { firstAction =
-                                            activeShipEntry
-                                                |> clickLocationOnInventoryShipEntry
-                                                |> effectMouseClickAtLocation MouseButtonRight
-                                        , followingSteps =
-                                            [ ( "Click menu entry 'undock'."
-                                              , lastContextMenuOrSubmenu
-                                                    >> Maybe.andThen (menuEntryContainingTextIgnoringCase "Undock")
-                                                    >> Maybe.map (.uiNode >> clickOnUIElement MouseButtonLeft)
-                                              )
-                                            ]
-                                        }
-                                    )
-                        )
-
-                Just itemInInventory ->
-                    DescribeBranch "I see at least one item in the ore hold. Move this to the item hangar."
-                        (EndDecisionPath
-                            (Act
-                                { firstAction =
-                                    VolatileHostInterface.SimpleDragAndDrop
-                                        { startLocation = itemInInventory.totalDisplayRegion |> centerFromDisplayRegion
-                                        , endLocation = itemHangar.totalDisplayRegion |> centerFromDisplayRegion
-                                        , mouseButton = MouseButtonLeft
-                                        }
-                                , followingSteps = []
-                                }
-                            )
-                        )
+        Just itemInInventory ->
+            DescribeBranch "I see at least one item in the ore hold. Use this to select all and jettison."
+                (EndDecisionPath
+                    (Act
+                        { firstAction = itemInInventory |> clickOnUIElement MouseButtonRight
+                        , followingSteps =
+                            [ ( "Click menu entry 'select all'."
+                              , lastContextMenuOrSubmenu
+                                    >> Maybe.andThen (menuEntryContainingTextIgnoringCase "select all")
+                                    >> Maybe.map (.uiNode >> clickOnUIElement MouseButtonLeft)
+                              )
+                            , ( "Open context menu on item in inventory."
+                              , inventoryWindowSelectedContainerFirstItem >> Maybe.map (clickOnUIElement MouseButtonRight)
+                              )
+                            , ( "Click menu entry 'jettison'."
+                              , lastContextMenuOrSubmenu
+                                    >> Maybe.andThen (menuEntryContainingTextIgnoringCase "jettison")
+                                    >> Maybe.map (.uiNode >> clickOnUIElement MouseButtonLeft)
+                              )
+                            ]
+                        }
+                    )
+                )
 
 
 lastDockedStationNameFromInfoPanelFromMemoryOrSettings : BotDecisionContext -> Maybe String
@@ -237,17 +215,9 @@ decideNextActionWhenInSpace context seeUndockingComplete =
                         DescribeBranch "I cannot see the ore hold capacity gauge." (EndDecisionPath Wait)
 
                     Just fillPercent ->
-                        if 99 <= fillPercent then
-                            DescribeBranch "The ore hold is full enough. Dock to station."
-                                (case context |> lastDockedStationNameFromInfoPanelFromMemoryOrSettings of
-                                    Nothing ->
-                                        DescribeBranch "At which station should I dock?. I was never docked in a station in this session." (EndDecisionPath Wait)
-
-                                    Just lastDockedStationNameFromInfoPanel ->
-                                        dockToStationMatchingNameSeenInInfoPanel
-                                            { stationNameFromInfoPanel = lastDockedStationNameFromInfoPanel }
-                                            context.parsedUserInterface
-                                )
+                        if 78 <= fillPercent then
+                            DescribeBranch "The ore hold is full enough. Jettison."
+                                (inventorySelectAllAndJettison context.parsedUserInterface)
 
                         else
                             DescribeBranch "The ore hold is not full enough yet. Get more ore."
